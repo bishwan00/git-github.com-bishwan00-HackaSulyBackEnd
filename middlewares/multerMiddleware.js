@@ -35,21 +35,21 @@ export const resizeImageUser = async (req, res, next) => {
     .toFile(`uploads/users/${req.file.filename}`);
   next();
 };
-export const resizeImagesUser = async (req, res, next) => {
+export const resizeImagesPost = async (req, res, next) => {
   if (!req.files) {
     return next();
   }
   req.body.files = [];
   for (let i = 0; i < req.files.length; i++) {
     req.body.files.push(
-      `user-${Date.now()}-${Math.random(Math.random * 10000)}-${i}.jpeg`
+      `post-${Date.now()}-${Math.random(Math.random * 10000)}-${i}.jpeg`
     );
 
     await sharp(req.files[i].buffer)
       .resize(500)
       .toFormat("jpeg")
       .jpeg({ quality: 90 })
-      .toFile(`uploads/users/${req.body.files[i]}`);
+      .toFile(`uploads/posts/${req.body.files[i]}`);
   }
 
   next();
@@ -86,4 +86,4 @@ const upload = multer({ storage: multerStorage, fileFilter });
 
 export const uploadSingle = upload.single("image");
 //ama la katekaya ka majmw3ayak rasm upload kat esta lera limite bo da aney ka 5 rasma
-export const uploadMulti = upload.array("images", 5);
+export const uploadMulti = upload.array("images", 2);

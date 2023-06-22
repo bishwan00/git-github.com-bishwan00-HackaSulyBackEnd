@@ -14,8 +14,6 @@ import {
 import {
   uploadSingle,
   resizeImageUser,
-  resizeImagesUser,
-  uploadMulti,
 } from "../middlewares/multerMiddleware.js";
 
 const router = Router();
@@ -35,17 +33,6 @@ router
     resizeImageUser,
     (req, res) => {
       res.json({ path: `users/${req.file.filename}` });
-    }
-  );
-router
-  .route("/uploads")
-  .post(
-    protect,
-    checkRole("user"),
-    uploadMulti,
-    resizeImagesUser,
-    (req, res) => {
-      res.json({ path: `users/${req.files.filename}` });
     }
   );
 
