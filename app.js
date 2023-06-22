@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import postRouters from "./routers/postRouters.js";
+import taskRouters from "./routers/taskRouters.js";
 
 import userRoutes from "./routers/userRouters.js";
 import morgan from "morgan";
@@ -26,6 +27,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRouters);
+app.use("/api/tasks", taskRouters);
 
 app.use(errorHandler);
 const __dirname = path.resolve();

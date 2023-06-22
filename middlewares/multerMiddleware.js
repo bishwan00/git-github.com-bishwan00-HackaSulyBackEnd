@@ -54,6 +54,25 @@ export const resizeImagesPost = async (req, res, next) => {
 
   next();
 };
+export const resizeImagesTask = async (req, res, next) => {
+  if (!req.files) {
+    return next();
+  }
+  req.body.files = [];
+  for (let i = 0; i < req.files.length; i++) {
+    req.body.files.push(
+      `task-${Date.now()}-${Math.random(Math.random * 10000)}-${i}.jpeg`
+    );
+
+    await sharp(req.files[i].buffer)
+      .resize(500)
+      .toFormat("jpeg")
+      .jpeg({ quality: 90 })
+      .toFile(`uploads/tasks/${req.body.files[i]}`);
+  }
+
+  next();
+};
 export const resizeImages = async (req, res, next) => {
   if (!req.files) {
     return next();

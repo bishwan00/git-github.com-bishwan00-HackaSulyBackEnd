@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const productsSchema = new mongoose.Schema(
+const postsSchema = new mongoose.Schema(
   {
     description: { type: String, require: true },
     images: { type: [String], required: true },
@@ -10,6 +10,6 @@ const productsSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const product = mongoose.model("product", productsSchema);
+const post = mongoose.model("post", postsSchema);
 
-export default product;
+export default post;
