@@ -16,6 +16,7 @@ const usersSchema = new mongoose.Schema(
       enum: ["ERBIL", "SULAYMANIYAH", "DUHOK"],
       minLength: 2,
     },
+    post: [{ type: mongoose.Types.ObjectId, ref: "post", require: true }],
     point: { type: String, require: true, minLength: 2 },
     image: { type: String, require: true },
 
