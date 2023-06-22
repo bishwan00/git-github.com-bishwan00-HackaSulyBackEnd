@@ -20,6 +20,22 @@ export const resizeImage = async (req, res, next) => {
   next();
 };
 
+export const resizeImageUser = async (req, res, next) => {
+  if (!req.file) {
+    next();
+  }
+
+  req.file.filename = `user-${Date.now()}-${Math.random(
+    Math.random * 10000
+  )}.jpeg`;
+  await sharp(req.file.buffer)
+    .resize(500)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toFile(`uploads/users/${req.file.filename}`);
+  next();
+};
+
 export const resizeImages = async (req, res, next) => {
   if (!req.files) {
     return next();

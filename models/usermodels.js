@@ -16,6 +16,8 @@ const usersSchema = new mongoose.Schema(
       enum: ["ERBIL", "SULAYMANIYAH", "DUHOK"],
       minLength: 2,
     },
+    point: { type: String, require: true, minLength: 2 },
+    image: { type: String, require: true },
 
     lastName: { type: String, require: true, minLength: 2 },
     phoneNumber: { type: String, require: true },

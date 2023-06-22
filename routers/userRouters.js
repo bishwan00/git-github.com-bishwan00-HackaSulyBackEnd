@@ -11,6 +11,10 @@ import {
   protect,
   signUpMiddleware,
 } from "../middlewares/authMiddleware.js";
+import {
+  uploadSingle,
+  resizeImageUser,
+} from "../middlewares/multerMiddleware.js";
 
 const router = Router();
 
@@ -20,11 +24,16 @@ router.route("/currentuser").get(protect, getCurrentUser);
 router.post("/login", login);
 
 router.route("/login-admin").post(loginAdmin);
-
-// router
-//   .route("/:id")
-//   .get(getSingleProduct)
-//   .patch(updateProduct)
-//   .delete(deleteProduct);
+router
+  .route("/upload")
+  .post(
+    protect,
+    checkRole("user"),
+    uploadSingle,
+    resizeImageUser,
+    (req, res) => {
+      res.json({ path: `products/${req.file.filename}` });
+    }
+  );
 
 export default router;
