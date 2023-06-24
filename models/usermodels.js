@@ -18,7 +18,13 @@ const usersSchema = new mongoose.Schema(
     },
     post: [{ type: mongoose.Types.ObjectId, ref: "post", require: true }],
     point: { type: Number, require: true, default: 0, minLength: 2 },
-    image: { type: String, require: true },
+    donate: { type: Number, require: true, default: 0, minLength: 2 },
+
+    image: {
+      type: String,
+      require: true,
+      default: "users/user-1687544074969-0.5114866047949307.jpeg",
+    },
 
     lastName: { type: String, require: true, minLength: 2 },
     phoneNumber: { type: String, require: true },

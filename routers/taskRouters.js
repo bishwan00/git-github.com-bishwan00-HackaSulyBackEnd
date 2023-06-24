@@ -18,18 +18,12 @@ router.route("/:id").patch(updatetask).delete(deletetask);
 
 router
   .route("/uploads")
-  .post(
-    protect,
-    checkRole("user"),
-    uploadMulti,
-    resizeImagesTask,
-    (req, res) => {
-      const paths = req.files.map((file) => {
-        return `tasks/${file.originalname}`;
-      });
+  .post(protect, uploadMulti, resizeImagesTask, (req, res) => {
+    const paths = req.body.files.map((file) => {
+      return `tasks/${file}`;
+    });
 
-      res.json({ paths });
-    }
-  );
+    res.json({ paths });
+  });
 
 export default router;

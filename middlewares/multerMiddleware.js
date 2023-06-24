@@ -44,7 +44,6 @@ export const resizeImagesPost = async (req, res, next) => {
     req.body.files.push(
       `post-${Date.now()}-${Math.random(Math.random * 10000)}-${i}.jpeg`
     );
-
     await sharp(req.files[i].buffer)
       .resize(500)
       .toFormat("jpeg")

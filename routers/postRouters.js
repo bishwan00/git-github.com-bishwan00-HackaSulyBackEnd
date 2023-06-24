@@ -18,18 +18,12 @@ router.route("/:id").patch(updatePost).delete(deletePost);
 
 router
   .route("/uploads")
-  .post(
-    protect,
-    checkRole("user"),
-    uploadMulti,
-    resizeImagesPost,
-    (req, res) => {
-      const paths = req.files.map((file) => {
-        return `posts/${file.originalname}`;
-      });
+  .post(protect, uploadMulti, resizeImagesPost, (req, res) => {
+    const paths = req.body.files.map((file) => {
+      return `posts/${file}`;
+    });
 
-      res.json({ paths });
-    }
-  );
+    res.json({ paths });
+  });
 
 export default router;

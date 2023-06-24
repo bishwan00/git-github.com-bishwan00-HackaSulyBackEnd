@@ -38,7 +38,10 @@ export const getPosts = async (req, res) => {
       }
     }
 
-    const getQuery = Posts.find(queryObj).populate("user", "userName");
+    const getQuery = Posts.find(queryObj).populate(
+      "userId",
+      "firstName lastName image"
+    );
 
     const count = await getQuery.clone().count();
 
@@ -73,7 +76,7 @@ export const getPosts = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   try {
-    const postId = req.params.id;
+    const postId = req.headers.id; // Access the id from the request header
     const updatedPost = req.body;
 
     const post = await Posts.findByIdAndUpdate(postId, updatedPost, {
@@ -91,6 +94,7 @@ export const updatePost = async (req, res) => {
     res.status(500).json({ status: "error", message: "Internal server error" });
   }
 };
+
 export const addPost = async (req, res) => {
   try {
     const data = await Posts.create(req.body);
