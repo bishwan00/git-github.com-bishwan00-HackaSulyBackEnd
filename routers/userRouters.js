@@ -1,7 +1,8 @@
 import { Router } from "express";
 import {
   getCurrentUser,
-  getUser,
+  getUsers,
+  getUsersWinner,
   login,
   loginAdmin,
   signup,
@@ -18,7 +19,9 @@ import {
 
 const router = Router();
 
-router.route("/").get(protect, checkRole("admin"), getUser);
+router.route("/").get(protect, getUsers);
+router.route("/getwinner").get(protect, getUsersWinner);
+
 router.route("/signup").post(signUpMiddleware, signup);
 router.route("/currentuser").get(protect, getCurrentUser);
 router.post("/login", login);

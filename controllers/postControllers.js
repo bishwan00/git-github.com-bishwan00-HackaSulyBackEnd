@@ -1,6 +1,7 @@
 import Posts from "../models/postmodels.js";
+import Tasks from "../models/taskmodels.js";
 
-import User from "../models/usermodels.js";
+import Users from "../models/usermodels.js";
 
 export const getPosts = async (req, res) => {
   try {
@@ -76,13 +77,32 @@ export const getPosts = async (req, res) => {
 
 export const updatePost = async (req, res) => {
   try {
-    const postId = req.headers.id; // Access the id from the request header
-    const updatedPost = req.body;
-
-    const post = await Posts.findByIdAndUpdate(postId, updatedPost, {
+    const post = await Posts.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
 
+    if (post.taskId) {
+      console.log("ss");
+      const point = await Tasks.findByIdAndUpdate(post.taskId, {
+        /* update data */
+      });
+      point.iscompleted = true;
+      await point.save();
+
+      const user = await Users.findByIdAndUpdate(post.userId, {
+        /* update data */
+      });
+
+      user.point = point.point + user.point;
+      await user.save();
+    } else {
+      const user = await Users.findByIdAndUpdate(post.userId, {
+        /* update data */
+      });
+
+      user.point = 20 + user.point;
+      await user.save();
+    }
     if (!post) {
       return res
         .status(404)
@@ -91,15 +111,16 @@ export const updatePost = async (req, res) => {
 
     res.status(200).json({ status: "success", data: post });
   } catch (err) {
-    res.status(500).json({ status: "error", message: "Internal server error" });
+    res.status(500).json({ status: "error", message: err.message });
   }
 };
 
 export const addPost = async (req, res) => {
   try {
+    if (!req.body?.taskId?.length > 0) req.body.taskId = undefined;
     const data = await Posts.create(req.body);
 
-    const user = await User.findByIdAndUpdate(
+    const user = await Users.findByIdAndUpdate(
       req.body.userId,
       { $push: { post: data._id } },
       { new: true }

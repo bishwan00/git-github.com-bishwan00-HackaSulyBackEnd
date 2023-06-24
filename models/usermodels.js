@@ -19,7 +19,7 @@ const usersSchema = new mongoose.Schema(
     post: [{ type: mongoose.Types.ObjectId, ref: "post", require: true }],
     point: { type: Number, require: true, default: 0, minLength: 2 },
     donate: { type: Number, require: true, default: 0, minLength: 2 },
-
+    taskId: { type: mongoose.Types.ObjectId, ref: "task", require: true },
     image: {
       type: String,
       require: true,

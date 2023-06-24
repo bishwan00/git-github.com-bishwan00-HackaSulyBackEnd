@@ -22,14 +22,88 @@ export const signup = async (req, res) => {
   }
 };
 
-export const getUser = tryCatch(async (req, res) => {
-  const user = await User.find();
+export const getUsersWinner = async (req, res) => {
+  try {
+    let query = JSON.stringify(req.query);
 
-  if (!user) {
-    throw new customError("no users found", 400);
+    //ama bo awaya la req.query kaya bysrynawa boy find ka eshkat
+    let excluteQuery = ["limit"];
+    //bo nwsyny gte ...
+    query = query.replace(/\b(gte|gt|lt|lte)\b/g, (match) => `$${match}`);
+
+    let queryObj = JSON.parse(query);
+    excluteQuery.forEach((i) => {
+      delete queryObj[i];
+    });
+
+    const getQuery = User.find(queryObj).sort({ point: -1 });
+
+    const count = await getQuery.clone().count();
+
+    //bo sort krdna
+
+    //id
+
+    //ama bo awaya ka tanha datay aw row wana bgarenetawa ka yawtate bo nmwna name image price
+
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 15;
+
+    const skip = limit * (page - 1);
+
+    getQuery.skip(skip).limit(limit);
+    const user = await getQuery;
+
+    res.status(200).json({
+      stastus: "success",
+      NumberOfData: count,
+      data: user,
+    });
+  } catch (err) {
+    res.status(404).json({ stastus: "error", message: "user not found" });
   }
-  res.status(201).json({ status: "success", data: user });
-});
+};
+export const getUsers = async (req, res) => {
+  try {
+    let query = JSON.stringify(req.query);
+
+    //ama bo awaya la req.query kaya bysrynawa boy find ka eshkat
+    let excluteQuery = ["limit"];
+    //bo nwsyny gte ...
+    query = query.replace(/\b(gte|gt|lt|lte)\b/g, (match) => `$${match}`);
+
+    let queryObj = JSON.parse(query);
+    excluteQuery.forEach((i) => {
+      delete queryObj[i];
+    });
+
+    const getQuery = User.find(queryObj).sort({ donate: -1 });
+
+    const count = await getQuery.clone().count();
+
+    //bo sort krdna
+
+    //id
+
+    //ama bo awaya ka tanha datay aw row wana bgarenetawa ka yawtate bo nmwna name image price
+
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 15;
+
+    const skip = limit * (page - 1);
+
+    getQuery.skip(skip).limit(limit);
+    const user = await getQuery;
+
+    res.status(200).json({
+      stastus: "success",
+      NumberOfData: count,
+      data: user,
+    });
+  } catch (err) {
+    res.status(404).json({ stastus: "error", message: "user not found" });
+  }
+};
 
 export const login = (req, res, next) => {
   passport.authenticate("login", async (err, user, info) => {

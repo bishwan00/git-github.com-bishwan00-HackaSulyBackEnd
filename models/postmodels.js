@@ -6,6 +6,7 @@ const postsSchema = new mongoose.Schema(
     images: { type: [String], required: true },
     isActive: { type: Boolean, default: false },
     userId: { type: mongoose.Types.ObjectId, ref: "user", require: true },
+    taskId: { type: mongoose.Types.ObjectId, ref: "task", require: false },
   },
   { timestamps: true }
 );
